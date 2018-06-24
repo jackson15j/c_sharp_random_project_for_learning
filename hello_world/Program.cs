@@ -24,9 +24,10 @@ namespace hello_world
 
             Console.WriteLine("Fibonacci Numbers 1-15:");
 
-            for (int i = 0; i < 15; i++)
+            var generator = new FibonacciGenerator();
+            foreach (var digit in generator.Generate(15))
             {
-                Console.WriteLine($"{i + 1}: {FibonacciNumber(i)}");
+                Console.WriteLine(digit);
             }
         }
 
