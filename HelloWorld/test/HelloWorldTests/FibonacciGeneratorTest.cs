@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
 
+
 /*
   Class based generator, which contains multiple objects which can be consumed
   by xUnit's Theory testcases when data is passed in via a ClassData attribute.
@@ -22,6 +23,16 @@ public class FibonacciGeneratorTestData : IEnumerable<object[]>
     public IEnumerator<object[]> GetEnumerator() => _data.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
+
+
+/*
+  Fib class for testing the private `FibonacciGenerator.Fib()` method.
+*/
+public class Fib
+{
+    public int InitialValue {get; set;}
+    public int ExpectedValue {get; set;}
 }
 
 
@@ -80,23 +91,38 @@ public class FibonacciGeneratorTest
     }
 
     /*
-      Use Reflection to test a private member.
+      Using a static member to define test data for the private
+      `FibonacciGenerator.Fib()` method. Uses the `Fib` class defined at the
+      top of the file.
+    */
+    public static IEnumerable<object[]> FibTestMemberData()
+    {
+        yield return new object[] {new Fib {InitialValue = 0, ExpectedValue = 0}};
+        yield return new object[] {new Fib {InitialValue = 1, ExpectedValue = 1}};
+        yield return new object[] {new Fib {InitialValue = 2, ExpectedValue = 1}};
+        yield return new object[] {new Fib {InitialValue = 3, ExpectedValue = 2}};
+        yield return new object[] {new Fib {InitialValue = 4, ExpectedValue = 3}};
+        yield return new object[] {new Fib {InitialValue = 5, ExpectedValue = 5}};
+        yield return new object[] {new Fib {InitialValue = 6, ExpectedValue = 8}};
+        yield return new object[] {new Fib {InitialValue = 7, ExpectedValue = 13}};
+    }
+
+    /*
+      Use Reflection to test the `FibonacciGenerator.Fib()` private member.
 
       See:
 
       * https://stackoverflow.com/questions/15652656/get-return-value-after-invoking-a-method-from-dll-using-reflection#15652926
       * https://stackoverflow.com/questions/9122708/unit-testing-private-methods-in-c-sharp#15607491
     */
-    [Fact]
-    public void TestPrivateFib()
+    [Theory]
+    [MemberData(nameof(FibTestMemberData))]
+    public void TestPrivateFibViaRelfection(Fib fibData)
     {
-        int initialValue = 1;
-        int expectedValue = 1;
-
         FibonacciGenerator fibonacciGenerator = new FibonacciGenerator();
         MethodInfo methodInfo = typeof(FibonacciGenerator).GetMethod("Fib", BindingFlags.NonPublic | BindingFlags.Instance);
-        object[] parameters = {initialValue};
+        object[] parameters = {fibData.InitialValue};
         int retVal = (int)methodInfo.Invoke(fibonacciGenerator, parameters);
-        Assert.Equal(expectedValue, retVal);
+        Assert.Equal(fibData.ExpectedValue, retVal);
     }
 }
