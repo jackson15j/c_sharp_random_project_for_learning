@@ -13,3 +13,10 @@ Hierarchical Setup
   xunit` to initialise the test code folder. Followed by `dotnet add reference
   ../../src/ProjectName/ProjectName.csproj` to direct the tests at the src code
   folder.
+
+Commands
+--------
+
+* Run code: `dotnet run` from `src/ProjectName/` folder.
+* Test code: `dotnet test` from `test/ProjectNameTest/` folder.
+
