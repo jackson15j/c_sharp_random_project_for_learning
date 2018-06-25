@@ -125,4 +125,24 @@ public class FibonacciGeneratorTest
         int retVal = (int)methodInfo.Invoke(fibonacciGenerator, parameters);
         Assert.Equal(fibData.ExpectedValue, retVal);
     }
+
+    /*
+      Use `PrivateObject` class to test the `FibonacciGenerator.Fib()` private
+      member.
+
+      See:
+
+      * https://stackoverflow.com/questions/9122708/unit-testing-private-methods-in-c-sharp#15607491
+      * https://msdn.microsoft.com/en-us/library/microsoft.visualstudio.testtools.unittesting.privateobject.aspx
+     */
+    // [Theory]
+    // [MemberData(nameof(FibTestMemberData))]
+    // public void TestPrivateFibViaPrivateObjectClass(Fib fibData)
+    // {
+    //     FibonacciGenerator fibonacciGenerator = new FibonacciGenerator();
+    //     // Broken as of: https://github.com/Microsoft/testfx/issues/366.
+    //     PrivateObject obj = new PrivateObject(fibonacciGenerator);
+    //     int retVal = obj.Invoke("Fib");
+    //     Assert.Equal(fibData.ExpectedValue, retVal);
+    // }
 }
