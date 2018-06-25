@@ -6,6 +6,8 @@ using Xunit;
 /*
   Class based generator, which contains multiple objects which can be consumed
   by xUnit's Theory testcases when data is passed in via a ClassData attribute.
+
+  See: http://hamidmosalla.com/2017/02/25/xunit-theory-working-with-inlinedata-memberdata-classdata/
 */
 public class FibonacciGeneratorTestData : IEnumerable<object[]>
 {
@@ -50,6 +52,28 @@ public class FibonacciGeneratorTest
     [Theory]
     [ClassData(typeof(FibonacciGeneratorTestData))]
     public void GenerateReturnsSequenceViaTestClassData(List<int> expectedList)
+    {
+        Assert.Equal(expectedList, new FibonacciGenerator().Generate(expectedList.Count));
+    }
+
+    /*
+      Using a static member, instead of creating the above IEnumerable test
+      data class.
+    */
+    public static IEnumerable<object[]> FibonacciGeneratorTestMemberData()
+    {
+        yield return new object[] {new List<int> {0}};
+        yield return new object[] {new List<int> {0, 1, 1, 2, 3, 5}};
+        yield return new object[] {new List<int> {0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377}};
+    }
+
+    /*
+      Use Member Data to cycle over Test data objects. Each object has a single
+      argument which is a List.
+    */
+    [Theory]
+    [MemberData(nameof(FibonacciGeneratorTestMemberData))]
+    public void GenerateReturnsSequenceViaTestMemberData(List<int> expectedList)
     {
         Assert.Equal(expectedList, new FibonacciGenerator().Generate(expectedList.Count));
     }
