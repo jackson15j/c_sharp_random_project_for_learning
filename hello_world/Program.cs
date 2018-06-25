@@ -4,7 +4,9 @@
   - https://docs.microsoft.com/en-us/dotnet/core/tutorials/using-with-xplat-cli
  */
 
+using Pets;
 using System;
+using System.Collections.Generic;
 
 namespace hello_world
 {
@@ -12,6 +14,7 @@ namespace hello_world
     {
         static void Main(string[] args)
         {
+            // Reading CLI args example.
             if (args.Length > 0)
             {
                 // Run via: `dotnet run -- <arg>`.
@@ -22,12 +25,24 @@ namespace hello_world
                 Console.WriteLine("Hello!");
             }
 
+            // Multiple files in same directory example.
             Console.WriteLine("Fibonacci Numbers 1-15:");
-
             var generator = new FibonacciGenerator();
             foreach (var digit in generator.Generate(15))
             {
                 Console.WriteLine(digit);
+            }
+
+            // Multiple files in sub-folders example.
+            List<IPet> pets = new List<IPet>
+            {
+                new Dog(),
+                new Cat()
+            };
+
+            foreach (var pet in pets)
+            {
+                Console.WriteLine(pet.TalkToOwner());
             }
         }
 
