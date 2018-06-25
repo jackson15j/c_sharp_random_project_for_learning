@@ -1,13 +1,12 @@
-﻿/*
+﻿using Pets;
+using System;
+using System.Collections.Generic;
+
+/*
   Following the dotnet CLI tutorials:
 
   - https://docs.microsoft.com/en-us/dotnet/core/tutorials/using-with-xplat-cli
  */
-
-using Pets;
-using System;
-using System.Collections.Generic;
-
 namespace HelloWorld
 {
     class Program
