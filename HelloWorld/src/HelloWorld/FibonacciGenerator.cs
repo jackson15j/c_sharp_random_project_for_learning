@@ -5,7 +5,7 @@
  */
 using System.Collections.Generic;
 
-namespace hello_world
+namespace HelloWorld
 {
     public class FibonacciGenerator
     {

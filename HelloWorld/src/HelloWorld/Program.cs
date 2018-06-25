@@ -8,7 +8,7 @@ using Pets;
 using System;
 using System.Collections.Generic;
 
-namespace hello_world
+namespace HelloWorld
 {
     class Program
     {
