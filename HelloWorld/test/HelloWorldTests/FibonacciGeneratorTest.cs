@@ -1,6 +1,7 @@
 using HelloWorld;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Xunit;
 
 /*
@@ -76,5 +77,26 @@ public class FibonacciGeneratorTest
     public void GenerateReturnsSequenceViaTestMemberData(List<int> expectedList)
     {
         Assert.Equal(expectedList, new FibonacciGenerator().Generate(expectedList.Count));
+    }
+
+    /*
+      Use Reflection to test a private member.
+
+      See:
+
+      * https://stackoverflow.com/questions/15652656/get-return-value-after-invoking-a-method-from-dll-using-reflection#15652926
+      * https://stackoverflow.com/questions/9122708/unit-testing-private-methods-in-c-sharp#15607491
+    */
+    [Fact]
+    public void TestPrivateFib()
+    {
+        int initialValue = 1;
+        int expectedValue = 1;
+
+        FibonacciGenerator fibonacciGenerator = new FibonacciGenerator();
+        MethodInfo methodInfo = typeof(FibonacciGenerator).GetMethod("Fib", BindingFlags.NonPublic | BindingFlags.Instance);
+        object[] parameters = {initialValue};
+        int retVal = (int)methodInfo.Invoke(fibonacciGenerator, parameters);
+        Assert.Equal(expectedValue, retVal);
     }
 }
