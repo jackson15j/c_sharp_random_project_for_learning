@@ -3,9 +3,10 @@
 # See:
 # * https://github.com/dotnet/dotnet-docker-samples/blob/master/dotnetapp-dev/Dockerfile
 # * https://docs.microsoft.com/en-us/dotnet/core/docker/intro-net-docker
+# * https://docs.docker.com/engine/examples/dotnetcore/
 #
 # TODO: add entrypoints to call specific stages.
-FROM microsoft/dotnet:latest
+FROM microsoft/dotnet:latest AS base
 WORKDIR /app
 
 # Copying project in, in it's current state and then doing a clean...
@@ -26,4 +27,7 @@ WORKDIR /app
 RUN dotnet publish -o out
 
 # Run the artefact.
-RUN dotnet src/HelloWorld/out/HelloWorld.dll
+FROM base
+WORKDIR /app
+COPY --from=base /app/src/HelloWorld/out .
+ENTRYPOINT ["dotnet", "HelloWorld.dll"]

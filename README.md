@@ -24,5 +24,7 @@ Or use the docker container to do a full development cycle
 (clean/build/test/publish/run):
 
 ```bash
-docker build -t dev-app .  # from project root.
+cd $(git rev-parse --show-toplevel)/HelloWorld   # Go to git root folder.
+docker build -t devapp .  # Build docker image (Runs clean/build/test/publish).
+docker run --rm devapp  # Runs an instance which implicitly calls `dotnet run`.
 ```
