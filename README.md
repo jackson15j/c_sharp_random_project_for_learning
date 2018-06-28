@@ -4,6 +4,10 @@ C# Learning Project
 Quick and dirty project to get my head around C#, how it uses the .NET
 libraries, compilation on Linux via Mono and some basic testing. ...hopefully.
 
+Majority of my research is in my [csharp_notes] file.
+
+Emacs config changes can be found in my [Github: .emacs] repo.
+
 Hierarchical Setup
 ------------------
 
@@ -40,5 +44,7 @@ Coverage
 * Actively developed.
 
 
+[csharp_notes]: csharp_notes.md
+[Github: .emacs]: https://github.com/jackson15j/dot_emacs
 [Github: Coverlet]: https://github.com/tonerdo/coverlet
 [Github: coverlay]: https://github.com/twada/coverlay.el
