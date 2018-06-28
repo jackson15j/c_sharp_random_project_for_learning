@@ -20,3 +20,9 @@ Commands
 * Run code: `dotnet run` from `src/ProjectName/` folder.
 * Test code: `dotnet test` from `test/ProjectNameTest/` folder.
 
+Or use the docker container to do a full development cycle
+(clean/build/test/publish/run):
+
+```bash
+docker build -t dev-app .  # from project root.
+```
