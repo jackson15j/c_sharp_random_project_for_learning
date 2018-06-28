@@ -28,3 +28,17 @@ cd $(git rev-parse --show-toplevel)/HelloWorld   # Go to git root folder.
 docker build -t devapp .  # Build docker image (Runs clean/build/test/publish).
 docker run --rm devapp  # Runs an instance which implicitly calls `dotnet run`.
 ```
+
+Coverage
+--------
+
+* Added [Github: Coverlet] to the test project with the following line in
+  `test/`: `dotnet add package coverlet.msbuild`.
+* To do a coverage test run: `dotnet test /p:CollectCoverage=true`.
+* Can change output format (eg. Lcov for emacs [Github: coverlay] mode support)
+  / excluded files / coverage file destination, easily.
+* Actively developed.
+
+
+[Github: Coverlet]: https://github.com/tonerdo/coverlet
+[Github: coverlay]: https://github.com/twada/coverlay.el
