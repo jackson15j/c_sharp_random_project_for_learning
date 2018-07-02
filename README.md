@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jackson15j/c_sharp_random_project_for_learning.svg?branch=master)](https://travis-ci.org/jackson15j/c_sharp_random_project_for_learning)
+
 C# Learning Project
 ===================
 
@@ -43,6 +45,10 @@ Coverage
   / excluded files / coverage file destination, easily.
 * Actively developed.
 
+CI
+--
+
+Travis is configured to build the Docker container.
 
 [csharp_notes]: csharp_notes.md
 [Github: .emacs]: https://github.com/jackson15j/dot_emacs
