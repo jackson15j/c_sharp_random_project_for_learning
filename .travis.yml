@@ -1,0 +1,17 @@
+# https://docs.travis-ci.com/user/languages/csharp/
+# https://docs.travis-ci.com/user/docker/
+sudo: required
+# Not using the `csharp` language, since I've got my own docker image. Instead,
+# using the _yet to be documented_ `bash` language. Follow the links from:
+# https://github.com/travis-ci/travis-ci/issues/4895 for details.
+language: bash
+
+services:
+  - docker
+
+before_install:
+  - docker build --target testrunner -t hello_world_app:test HelloWorld/.
+
+script:
+  # TODO: check if there is any travis support for C# TestResult `.trx` files?
+  - docker run hello_world_app:test
