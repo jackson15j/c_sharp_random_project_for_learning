@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jackson15j/c_sharp_random_project_for_learning.svg?branch=master)](https://travis-ci.org/jackson15j/c_sharp_random_project_for_learning)
+[![Build Status](https://travis-ci.com/jackson15j/c_sharp_random_project_for_learning.svg?branch=master)](https://travis-ci.com/jackson15j/c_sharp_random_project_for_learning)
 
 C# Learning Project
 ===================
