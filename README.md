@@ -29,10 +29,24 @@ Commands
 Or use the docker container to do a full development cycle
 (clean/build/test/publish/run):
 
+* Build and explicitly call the tests with a log folder (NOTE: that `dotnet`
+  only allows for 1 project to be defined, despite my `Dockerfile` doing
+  globbing for multiple projects):
+
+```bash
+mkdir ~/logs
+cd $(git rev-parse --show-toplevel)/HelloWorld   # Go to git root folder.
+docker build --target testrunner -t devapp:test  # build test runner image.
+docker run --rm -v ~/logs:/app/tests/<Project>/TestResults devapp:test  # runs the test runner instance with log output.
+```
+
+* Build/test/publish all within the docker build and then call the app via run
+  command:
+
 ```bash
 cd $(git rev-parse --show-toplevel)/HelloWorld   # Go to git root folder.
 docker build -t devapp .  # Build docker image (Runs clean/build/test/publish).
-docker run --rm devapp  # Runs an instance which implicitly calls `dotnet run`.
+docker run --rm devapp -- [args]  # Runs an instance which implicitly calls `dotnet run`.
 ```
 
 Coverage
