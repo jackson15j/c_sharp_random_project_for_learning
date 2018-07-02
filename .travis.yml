@@ -1,0 +1,12 @@
+# https://docs.travis-ci.com/user/languages/csharp/
+# https://docs.travis-ci.com/user/docker/
+sudo: required
+language: csharp
+
+services:
+  - docker
+
+script:
+  # TODO: move docker build to a `before_install:` step, when tests are
+  # executed from an entrypoint.
+  - docker build -t hello_world_app HelloWorld/.
