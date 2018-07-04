@@ -37,10 +37,16 @@ WORKDIR /app/test
 # (it's a dotnet limitation).
 ENTRYPOINT dotnet test --logger:trx **
 
+FROM base AS itestrunner
+WORKDIR /app/integration
+ENTRYPOINT dotnet test --logger:trx **
+
 # Docker build test stage if the above docker run call is not used.
 From base AS test
 WORKDIR /app/test
 RUN dotnet test **
+WORKDIR /app/integration
+run dotnet test **
 
 # Publish artefacts.
 FROM test AS publish
