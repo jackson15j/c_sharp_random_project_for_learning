@@ -14,10 +14,24 @@ using Xunit;
 public class SumPageExampleTest : SumPageExample
 {
     [Fact]
-    public void GetHumanReadableResultsTest()
+    public void GetHumanReadableResultsForHTTPTest()
     {
         string expDisplayedUrl = "my-fake-site.com/it-is/not/real.html";
         string url = $"http://{expDisplayedUrl}";
+        string contentString = "The body of my fake website.\n\nIt is great!";
+        byte[] contentByte = Encoding.UTF8.GetBytes(contentString);
+        int expContentLength = contentByte.Length;
+
+        string expDisplayOutput = string.Format("\n{0, -58} {1,8}", expDisplayedUrl, expContentLength);
+
+        Assert.Equal(expDisplayOutput, new SumPageExampleTest().GetHumanReadableResults(url, contentByte));
+    }
+
+    [Fact]
+    public void GetHumanReadableResultsForHTTPSTest()
+    {
+        string expDisplayedUrl = "my-fake-site.com/it-is/not/real.html";
+        string url = $"https://{expDisplayedUrl}";
         string contentString = "The body of my fake website.\n\nIt is great!";
         byte[] contentByte = Encoding.UTF8.GetBytes(contentString);
         int expContentLength = contentByte.Length;

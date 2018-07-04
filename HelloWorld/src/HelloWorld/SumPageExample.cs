@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 
 /**
    Synchronous example for Summing Web Pages. See:
@@ -42,7 +43,8 @@ public class SumPageExample {
     protected string GetHumanReadableResults(string url, byte[] content)
     {
         var bytes = content.Length;
-        var displayURL = url.Replace("http://", "");
+        // regex replace all schemas: "http://", "https://", "ftp://", etc...
+        var displayURL = Regex.Replace(url, "^.*:\\/\\/", "");
         return string.Format("\n{0, -58} {1,8}", displayURL, bytes);
     }
 
