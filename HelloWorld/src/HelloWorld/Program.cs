@@ -1,6 +1,7 @@
 ﻿using Pets;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 /*
   Following the dotnet CLI tutorials:
@@ -11,6 +12,8 @@ namespace HelloWorld
 {
     class Program
     {
+        static Stopwatch watch = new Stopwatch();
+
         static void Main(string[] args)
         {
             // Reading CLI args example.
@@ -47,7 +50,10 @@ namespace HelloWorld
 
 
             // Synchronous call to get HTTP pages.
+            watch.Start();
             new SumPageExample().SumPageSizes();
+            watch.Stop();
+            Console.WriteLine($"Synchronous call took: {watch.ElapsedMilliseconds}ms");
         }
 
         static int FibonacciNumber(int n)
