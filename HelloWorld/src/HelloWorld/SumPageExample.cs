@@ -10,7 +10,7 @@ using System.Net;
 
    Code modified to work as a, non-Visual Studio, Console application.
  */
-class SumPageExample {
+public class SumPageExample {
 
     /**
        List of URLs for test data.
@@ -34,6 +34,19 @@ class SumPageExample {
     }
 
     /**
+       Public method (to lazy to test via reflection
+
+       @param string url - URL to display alongside page size.
+       @param byte[] content - Page content from the provided URL.
+     */
+    protected string GetHumanReadableResults(string url, byte[] content)
+    {
+        var bytes = content.Length;
+        var displayURL = url.Replace("http://", "");
+        return string.Format("\n{0, -58} {1,8}", displayURL, bytes);
+    }
+
+    /**
        Grabs length of content, munges url, and prints both to console in human
        readable columns.
 
@@ -42,9 +55,7 @@ class SumPageExample {
      */
     private void DisplayResults(string url, byte[] content)
     {
-        var bytes = content.Length;
-        var displayURL = url.Replace("http://", "");
-        Console.Write(string.Format("\n{0, -58} {1,8}", displayURL, bytes));
+        Console.Write(GetHumanReadableResults(url, content));
     }
 
     /**
