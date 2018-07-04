@@ -44,6 +44,10 @@ namespace HelloWorld
             {
                 Console.WriteLine(pet.TalkToOwner());
             }
+
+
+            // Synchronous call to get HTTP pages.
+            new SumPageExample().SumPageSizes();
         }
 
         static int FibonacciNumber(int n)
