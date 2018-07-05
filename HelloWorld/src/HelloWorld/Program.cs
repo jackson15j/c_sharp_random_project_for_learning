@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 /*
   Following the dotnet CLI tutorials:
@@ -54,6 +55,22 @@ namespace HelloWorld
             new SumPageExample().SumPageSizes();
             watch.Stop();
             Console.WriteLine($"Synchronous call took: {watch.ElapsedMilliseconds}ms");
+
+            // Asynchronous call to get HTTP pages.
+            MyAsyncEventHandler().GetAwaiter().GetResult();
+        }
+
+        /**
+           Dumped the await call into an Event Handler to avoid making Main()
+           async. NOTE: in C# 7.1 you can make main async.
+         */
+        static async Task MyAsyncEventHandler()
+        {
+            watch.Reset();
+            watch.Start();
+            await new SumPageExample().SumPageSizesAsync();
+            watch.Stop();
+            Console.WriteLine($"Asynchronous call took: {watch.ElapsedMilliseconds}ms");
         }
 
         static int FibonacciNumber(int n)

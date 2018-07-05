@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 /**
    Synchronous example for Summing Web Pages. See:
@@ -82,8 +83,29 @@ public class SumPageExample {
     }
 
     /**
-       Wrapper function to Get the content from a class defined list of URLs
-       and display their respective lengths.
+       Asynchronous call to get the page contents for the provided URL.
+
+       @param string url - URL to get page content for.
+       @returns byte[].
+     */
+    public async Task<byte[]> GetURLContentsAsync(string url)
+    {
+        var content = new MemoryStream();
+        var WebReq = (HttpWebRequest)WebRequest.Create(url);
+
+        using (WebResponse response = await WebReq.GetResponseAsync())
+        {
+            using (Stream responseStream = response.GetResponseStream())
+            {
+                await responseStream.CopyToAsync(content);
+            }
+        }
+        return content.ToArray();
+    }
+
+    /**
+       Synchronous wrapper function to Get the content from a class defined
+       list of URLs and display their respective lengths.
      */
     public void SumPageSizes()
     {
@@ -93,6 +115,26 @@ public class SumPageExample {
         foreach (var url in urlList)
         {
             byte[] urlContents = GetURLContents(url);
+            DisplayResults(url, urlContents);
+            total += urlContents.Length;
+        }
+        Console.WriteLine(string.Format("\n\nTotal bytes returned: {0}", total));
+    }
+
+    /**
+       Asynchronous wrapper function to Get the content from a class defined
+       list of URLs and display their respective lengths.
+     */
+    public async Task SumPageSizesAsync()
+    {
+        List<string> urlList = SetUpURLList();
+
+        var total = 0;
+        foreach (var url in urlList)
+        {
+            // FIXME: Using `foreach` in this way blocks each serial async
+            // call. Need to change the code to call them in parallel.
+            byte[] urlContents = await GetURLContentsAsync(url);
             DisplayResults(url, urlContents);
             total += urlContents.Length;
         }
