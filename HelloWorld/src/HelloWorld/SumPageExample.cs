@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -132,12 +133,49 @@ public class SumPageExample {
         var total = 0;
         foreach (var url in urlList)
         {
-            // FIXME: Using `foreach` in this way blocks each serial async
-            // call. Need to change the code to call them in parallel.
+            // Using `foreach` in this way blocks each serial async call. See:
+            // `SumPageSizesInParallelAndAsync()` to call them in parallel.
             byte[] urlContents = await GetURLContentsAsync(url);
             DisplayResults(url, urlContents);
             total += urlContents.Length;
         }
+        Console.WriteLine(string.Format("\n\nTotal bytes returned: {0}", total));
+    }
+
+    /**
+       Async wrapper to get a URL and munge to display in a human readable
+       format, as per:
+
+       * https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/how-to-extend-the-async-walkthrough-by-using-task-whenall
+
+       TODO: Separate out network calls from parsing/munging code and
+       integration/unit test respectively.
+
+       @param string url - URL to get and display in human readable format.
+       @return int - Length of content.
+     */
+    private async Task<int> ProcessURLAsync(string url)
+    {
+        var byteArray = await GetURLContentsAsync(url);
+        DisplayResults(url, byteArray);
+        return byteArray.Length;
+    }
+
+    /**
+       Asynchronous & parallel wrapper function to Get the content from a class
+       defined list of URLs and display their respective lengths.
+     */
+    public async Task SumPageSizesInParallelAndAsync()
+    {
+        List<string> urlList = SetUpURLList();
+
+        // Create a query.
+        IEnumerable<Task<int>> downloadTasksQuery = from url in urlList select ProcessURLAsync(url);
+        // Use ToArray to execute the query and start the download tasks.
+        Task<int>[] downloadTasks = downloadTasksQuery.ToArray();
+
+        int[] lengths = await Task.WhenAll(downloadTasks);
+        int total = lengths.Sum();
         Console.WriteLine(string.Format("\n\nTotal bytes returned: {0}", total));
     }
 }

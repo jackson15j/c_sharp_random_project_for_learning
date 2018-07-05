@@ -57,20 +57,36 @@ namespace HelloWorld
             Console.WriteLine($"Synchronous call took: {watch.ElapsedMilliseconds}ms");
 
             // Asynchronous call to get HTTP pages.
-            MyAsyncEventHandler().GetAwaiter().GetResult();
+            MainSumPageSizesAsync().GetAwaiter().GetResult();
+
+            // Asynchronous & Parallel calls to get HTTP pages.
+            MainSumPageSizesInParallelAndAsync().GetAwaiter().GetResult();
         }
 
         /**
            Dumped the await call into an Event Handler to avoid making Main()
            async. NOTE: in C# 7.1 you can make main async.
          */
-        static async Task MyAsyncEventHandler()
+        static async Task MainSumPageSizesAsync()
         {
             watch.Reset();
             watch.Start();
             await new SumPageExample().SumPageSizesAsync();
             watch.Stop();
             Console.WriteLine($"Asynchronous call took: {watch.ElapsedMilliseconds}ms");
+        }
+
+        /**
+           Dumped the await call into an Event Handler to avoid making Main()
+           async. NOTE: in C# 7.1 you can make main async.
+         */
+        static async Task MainSumPageSizesInParallelAndAsync()
+        {
+            watch.Reset();
+            watch.Start();
+            await new SumPageExample().SumPageSizesInParallelAndAsync();
+            watch.Stop();
+            Console.WriteLine($"Asynchronous & Parallel calls took: {watch.ElapsedMilliseconds}ms");
         }
 
         static int FibonacciNumber(int n)
