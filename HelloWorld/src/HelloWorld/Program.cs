@@ -13,6 +13,7 @@ namespace HelloWorld
 {
     class Program
     {
+        delegate Task DeleFunc();  // Used by: `StopWatchDelegate()`.
         static Stopwatch watch = new Stopwatch();
 
         static void Main(string[] args)
@@ -50,60 +51,43 @@ namespace HelloWorld
             }
 
 
+            SumPageExample sumPageExample = new SumPageExample();
             // Synchronous call to get HTTP pages.
             watch.Start();
-            new SumPageExample().SumPageSizes();
+            sumPageExample.SumPageSizes();
             watch.Stop();
             Console.WriteLine($"Synchronous call took: {watch.ElapsedMilliseconds}ms");
 
             // Asynchronous call to get HTTP pages.
-            MainSumPageSizesAsync().GetAwaiter().GetResult();
+            StopWatchDelegateAsync(sumPageExample.SumPageSizesAsync).GetAwaiter().GetResult();
 
             // Asynchronous & Parallel calls to get HTTP pages.
-            MainSumPageSizesInParallelAndAsync().GetAwaiter().GetResult();
+            StopWatchDelegateAsync(sumPageExample.SumPageSizesInParallelAndAsync).GetAwaiter().GetResult();
 
             // Multiple asynchronous calls created and then awaited at a later
             // date, to provide a parallel call.
-            MainCreateMultipleTasksAsync().GetAwaiter().GetResult();
+            StopWatchDelegateAsync(sumPageExample.CreateMultipleTasksAsync).GetAwaiter().GetResult();
         }
 
         /**
-           Dumped the await call into an Event Handler to avoid making Main()
-           async. NOTE: in C# 7.1 you can make main async.
-         */
-        static async Task MainSumPageSizesAsync()
-        {
-            watch.Reset();
-            watch.Start();
-            await new SumPageExample().SumPageSizesAsync();
-            watch.Stop();
-            Console.WriteLine($"Asynchronous call took: {watch.ElapsedMilliseconds}ms");
-        }
+           Delegate Method to wrap my functions to get elapsed time for the
+           method.
 
-        /**
-           Dumped the await call into an Event Handler to avoid making Main()
-           async. NOTE: in C# 7.1 you can make main async.
-         */
-        static async Task MainSumPageSizesInParallelAndAsync()
-        {
-            watch.Reset();
-            watch.Start();
-            await new SumPageExample().SumPageSizesInParallelAndAsync();
-            watch.Stop();
-            Console.WriteLine($"Asynchronous & Parallel calls took: {watch.ElapsedMilliseconds}ms");
-        }
+           NOTE: Implicitly uses the class global `StopWatch` called `watch`.
+           FIXME: pass in `StopWatch`, or create within the delegate if I
+           factor this out of the main class.
 
-        /**
-           Dumped the await call into an Event Handler to avoid making Main()
-           async. NOTE: in C# 7.1 you can make main async.
-         */
-        static async Task MainCreateMultipleTasksAsync()
+           @param DeleFunc task - Get timing of any `DeleFunc` (`Task`) based
+                   methods.
+           */
+        static async Task StopWatchDelegateAsync(DeleFunc task)
         {
+            Console.WriteLine($"\n-- Starting timing of: {task.Method.Name}()...");
             watch.Reset();
             watch.Start();
-            await new SumPageExample().CreateMultipleTasksAsync();
+            await task();
             watch.Stop();
-            Console.WriteLine($"Multiple Asynchronous & delayed await Parallel calls took: {watch.ElapsedMilliseconds}ms");
+            Console.WriteLine($"-- {task.Method.Name}(), took: {watch.ElapsedMilliseconds}ms");
         }
 
         static int FibonacciNumber(int n)
