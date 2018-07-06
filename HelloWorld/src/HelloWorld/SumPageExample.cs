@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -176,6 +177,47 @@ public class SumPageExample {
 
         int[] lengths = await Task.WhenAll(downloadTasks);
         int total = lengths.Sum();
+        Console.WriteLine(string.Format("\n\nTotal bytes returned: {0}", total));
+    }
+
+    /**
+       Async wrapper to get a URL and munge to display in a human readable
+       format, as per:
+
+       * https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/how-to-make-multiple-web-requests-in-parallel-by-using-async-and-await
+
+       TODO: Separate out network calls from parsing/munging code and
+       integration/unit test respectively.
+
+       @param string url - URL to get and display in human readable format.
+       @param HttpClient client - Client to make the request with.
+       @return int - Length of content.
+     */
+    private async Task<int> ProcessURLAsync(string url, HttpClient client)
+    {
+        var byteArray = await client.GetByteArrayAsync(url);
+        DisplayResults(url, byteArray);
+        return byteArray.Length;
+    }
+
+    /**
+       Create multiple Async tasks that are called from the same HttpClient.
+     */
+    public async Task CreateMultipleTasksAsync()
+    {
+        // Up buffer size from the default of: 65,536.
+        HttpClient client = new HttpClient() { MaxResponseContentBufferSize = 1000000 };
+
+        // Create & Start tasks, but await on them later on.
+        Task<int> download1 = ProcessURLAsync("http://msdn.microsoft.com", client);
+        Task<int> download2 = ProcessURLAsync("http://msdn.microsoft.com/library/hh156528(VS.110).aspx", client);
+        Task<int> download3 = ProcessURLAsync("http://msdn.microsoft.com/library/67w7t67f.aspx", client);
+
+        // Await each task.
+        int length1 = await download1;
+        int length2 = await download2;
+        int length3 = await download3;
+        int total = length1 + length2 + length3;
         Console.WriteLine(string.Format("\n\nTotal bytes returned: {0}", total));
     }
 }

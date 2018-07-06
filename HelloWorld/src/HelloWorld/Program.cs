@@ -61,6 +61,10 @@ namespace HelloWorld
 
             // Asynchronous & Parallel calls to get HTTP pages.
             MainSumPageSizesInParallelAndAsync().GetAwaiter().GetResult();
+
+            // Multiple asynchronous calls created and then awaited at a later
+            // date, to provide a parallel call.
+            MainCreateMultipleTasksAsync().GetAwaiter().GetResult();
         }
 
         /**
@@ -87,6 +91,19 @@ namespace HelloWorld
             await new SumPageExample().SumPageSizesInParallelAndAsync();
             watch.Stop();
             Console.WriteLine($"Asynchronous & Parallel calls took: {watch.ElapsedMilliseconds}ms");
+        }
+
+        /**
+           Dumped the await call into an Event Handler to avoid making Main()
+           async. NOTE: in C# 7.1 you can make main async.
+         */
+        static async Task MainCreateMultipleTasksAsync()
+        {
+            watch.Reset();
+            watch.Start();
+            await new SumPageExample().CreateMultipleTasksAsync();
+            watch.Stop();
+            Console.WriteLine($"Multiple Asynchronous & delayed await Parallel calls took: {watch.ElapsedMilliseconds}ms");
         }
 
         static int FibonacciNumber(int n)
