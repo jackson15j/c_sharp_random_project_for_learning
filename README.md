@@ -6,7 +6,7 @@ C# Learning Project
 Quick and dirty project to get my head around C#, how it uses the .NET
 libraries, compilation on Linux via Mono and some basic testing. ...hopefully.
 
-Majority of my research is in my [csharp_notes] file.
+**Majority of my research is in my [csharp_notes] file.**
 
 Emacs config changes can be found in my [Github: .emacs] repo.
 
