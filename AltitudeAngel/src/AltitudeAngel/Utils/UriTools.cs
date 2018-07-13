@@ -31,6 +31,12 @@ public class UriTools
      */
     static public Uri BuildRequestUri(Uri uri, Dictionary<string, string> queryParameters)
     {
+        if (queryParameters == null)
+        {
+            Console.WriteLine($"No parameters given, so return URI: {uri}, as is...");
+            return uri;
+        }
+
         var builder = new UriBuilder(uri);
         var query = HttpUtility.ParseQueryString(builder.Query);
         foreach(var param in queryParameters) {

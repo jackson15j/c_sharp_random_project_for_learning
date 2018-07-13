@@ -28,18 +28,38 @@ namespace AltitudeAngelTest
 
         public static IEnumerable<object[]> mapDataTestMemberData()
         {
+            // +ve: Verify Uri + parameters
             yield return new object[] { new MapData {
                     baseUri = mapDataUri,
                     parameters = parameters,
                     expUri = expUri}
             };
+            // +ve: Verify String + parameters
             yield return new object[] { new MapData {
                     baseString = mapDataString,
                     parameters = parameters,
                     expUri = expUri}
             };
+            // -ve: Verify Uri + null parameters
+            yield return new object[] { new MapData {
+                    baseUri = mapDataUri,
+                    parameters = null,
+                    expUri = mapDataUri}
+            };
+            // -ve: Verify String + null parameters
+            yield return new object[] { new MapData {
+                    baseString = mapDataString,
+                    parameters = null,
+                    expUri = mapDataUri}
+            };
         }
 
+        /**
+           Quick test of the `UriTools.BuildRequestUri()` method.
+
+           @param MapData mapData - Expects a mapData instance to be passed in
+                   via the MemberData annotation.
+         */
         [Theory]
         [MemberData(nameof(mapDataTestMemberData))]
         public void BuildRequestUriTest(MapData mapData)
