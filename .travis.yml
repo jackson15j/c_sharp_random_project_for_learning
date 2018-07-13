@@ -12,8 +12,10 @@ services:
 before_install:
   - docker build --target testrunner -t hello_world_app:test HelloWorld/.
   - docker build --target itestrunner -t hello_world_app:integration HelloWorld/.
+  - docker build --target testrunner -t altitude_angel:test AltitudeAngel/.
 
 script:
   # TODO: check if there is any travis support for C# TestResult `.trx` files?
-  - docker run hello_world_app:test
-  - docker run hello_world_app:integration
+  - docker run --rm hello_world_app:test
+  - docker run --rm hello_world_app:integration
+  - docker run --rm altitude_angel:test
