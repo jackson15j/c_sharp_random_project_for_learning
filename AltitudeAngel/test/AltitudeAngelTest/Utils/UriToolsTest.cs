@@ -6,6 +6,7 @@ namespace AltitudeAngelTest
 {
     public class MapData
     {
+        public String baseString { get; set; }
         public Uri baseUri { get; set; }
         public Dictionary<string, string> parameters { get; set; }
         public Uri expUri { get; set; }
@@ -16,6 +17,7 @@ namespace AltitudeAngelTest
     {
         static Uri baseUri = new Uri("https://api.altitudeangel.com");
         static Uri mapDataUri = new Uri(baseUri, "/v2/mapdata/geojson");
+        static String mapDataString = "https://api.altitudeangel.com/v2/mapdata/geojson";
         static Dictionary<string, string> parameters = new Dictionary<string, string> {
             {"n", "51.46227963315035"},
             {"e", "-0.9569686575500782"},
@@ -31,13 +33,27 @@ namespace AltitudeAngelTest
                     parameters = parameters,
                     expUri = expUri}
             };
+            yield return new object[] { new MapData {
+                    baseString = mapDataString,
+                    parameters = parameters,
+                    expUri = expUri}
+            };
         }
 
         [Theory]
         [MemberData(nameof(mapDataTestMemberData))]
         public void BuildRequestUriTest(MapData mapData)
         {
-            Assert.Equal(mapData.expUri, UriTools.BuildRequestUri(mapData.baseUri, mapData.parameters));
+            Uri result;
+            if (mapData.baseUri == null)
+            {
+                result = UriTools.BuildRequestUri(mapData.baseString, mapData.parameters);
+            }
+            else
+            {
+                result = UriTools.BuildRequestUri(mapData.baseUri, mapData.parameters);
+            }
+            Assert.Equal(mapData.expUri, result);
         }
     }
 }
