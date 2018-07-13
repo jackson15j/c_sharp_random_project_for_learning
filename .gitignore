@@ -3,3 +3,4 @@
 **/bin/*
 **/coverage.info
 **/coverage.json
+**/.vs/
