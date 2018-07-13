@@ -40,16 +40,28 @@ namespace AltitudeAngelTest
                     parameters = parameters,
                     expUri = expUri}
             };
-            // -ve: Verify Uri + null parameters
+            // -ve: Verify Uri + null parameters = no munging of URI
             yield return new object[] { new MapData {
                     baseUri = mapDataUri,
                     parameters = null,
                     expUri = mapDataUri}
             };
-            // -ve: Verify String + null parameters
+            // -ve: Verify String + null parameters = no munging of URI
             yield return new object[] { new MapData {
                     baseString = mapDataString,
+                    parameters = new Dictionary<String, String>(),
+                    expUri = mapDataUri}
+            };
+            // -ve: Verify Uri + empty parameters = no munging of URI
+            yield return new object[] { new MapData {
+                    baseUri = mapDataUri,
                     parameters = null,
+                    expUri = mapDataUri}
+            };
+            // -ve: Verify String + empty parameters = no munging of URI
+            yield return new object[] { new MapData {
+                    baseString = mapDataString,
+                    parameters = new Dictionary<String, String>(),
                     expUri = mapDataUri}
             };
         }
