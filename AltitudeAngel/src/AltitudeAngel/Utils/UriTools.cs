@@ -6,7 +6,7 @@ using System.Web;
 /**
    Utility class that provides URI helper methods.
 */
-class UriTools
+public class UriTools
 {
     /**
        Builds a URI with query parameters to be used in a GET request.
