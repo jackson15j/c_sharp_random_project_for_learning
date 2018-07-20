@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 
 // TODO: Stop messing around with `Console.WriteLine()` and add proper logging!
@@ -324,7 +325,7 @@ namespace AltitudeAngel
         s	The south coordinate of the bounding box in degrees
         w	The west coordinate of the bounding box in degrees
         */
-        public async Task<HttpResponseMessage> GetMapData(double north, double east, double south, double west)
+        public async Task<MapData> GetMapData(double north, double east, double south, double west)
         {
             // TODO: Separate out: request building, external request/response,
             // response verification, JSON extraction from response.
@@ -351,8 +352,8 @@ namespace AltitudeAngel
             // JSON Extraction From Response.
             String responseJsonString = await response.Content.ReadAsStringAsync();
             // Console.WriteLine($"xxx - responseJsonString: {responseJsonString}");
-            // Json responseJson = JsonConvert.DeserializeObject<object>(responseJsonString);
-            return response;
+            MapData responseJson = JsonConvert.DeserializeObject<MapData>(responseJsonString);
+            return responseJson;
         }
 
         /**

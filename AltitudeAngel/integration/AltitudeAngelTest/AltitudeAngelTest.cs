@@ -1,6 +1,5 @@
 using AltitudeAngel;
 using System;
-using System.Net.Http;
 using Xunit;
 
 namespace AltitudeAngelTest
@@ -13,6 +12,7 @@ namespace AltitudeAngelTest
         // TODO: Add apiKey to an encrypted store outside of the repo for tests
         // and CI.
         static String apiKey = "";
+
         /**
            Verify the GetMapData method.
 
@@ -33,10 +33,13 @@ xxx response: StatusCode: 200, ReasonPhrase: 'OK', Version: 1.1, Content: System
         public async void GetMapDataTest()
         {
             AltitudeAngelApi client = new AltitudeAngelApi(apiKey);
-            HttpResponseMessage response = await client.GetMapData(
+            MapData response = await client.GetMapData(
                 51.46227963315035, -0.9569686575500782, 51.450125805383585, -0.9857433958618458);
             Console.WriteLine($"xxx response: {response}");
-
+            foreach(Feature feature in response.features)
+            {
+                Console.WriteLine($"xxx features: {feature.properties.name}");
+            }
         }
     }
 }
