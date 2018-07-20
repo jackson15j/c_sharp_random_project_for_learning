@@ -1,25 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace AltitudeAngel
 {
     class Program
     {
-        static Uri baseUri = new Uri("https://api.altitudeangel.com");
-        static Uri mapDataUri = new Uri(baseUri, "/v2/mapdata/geojson");
-        static Dictionary<string, string> parameters = new Dictionary<string, string> {
-            {"n", "51.46227963315035"},
-            {"e", "-0.9569686575500782"},
-            {"s", "51.450125805383585"},
-            {"w", "-0.9857433958618458"}
-        };
-        static HttpResponseMessage response;
-
-
         static void Main(string[] args)
         {
+            // TODO: Create entry points into the code like git/dotnet:
+            // `aa weather <lon> <lat>`
+            // `aa mapData <lon> <lat> <size>` or `aa mapData <n> <e> <s> <w>`
             if (args.Length != 1)
             {
                 Console.WriteLine("Application requires an Altitude Angel API key to be supplied!!");
@@ -28,21 +17,16 @@ namespace AltitudeAngel
 
             // Create an Authorization header with the CLI supplied API key.
             string apiKey = args[0];
-            AuthenticationHeaderValue authHeader = new AuthenticationHeaderValue("X-AA-ApiKey", apiKey);
-
-            // TODO: Use a handler to store the authorization on the client.
-            HttpClient client = new HttpClient();
-
-
-            // Build the request message.
-            HttpRequestMessage request = new HttpRequestMessage();
-            request.Headers.Authorization = authHeader;
-            request.Method = HttpMethod.Get;
-            request.RequestUri = UriTools.BuildRequestUri(mapDataUri, parameters);
-
+            AltitudeAngelApi aaClient = new AltitudeAngelApi(apiKey);
             // Synchronous call the async function for the HTTP Response.
-            response = client.SendAsync(request).Result;
-            Console.WriteLine($"Status code: {response.StatusCode}");
+            // FIXME: don't hard-code coordinates.
+            MapData response = aaClient.GetMapData(
+                51.46227963315035, -0.9569686575500782, 51.450125805383585, -0.9857433958618458).Result;
+            Console.WriteLine("MapData Feature Names: ");
+                foreach(Feature feature in response.features)
+            {
+                Console.Write($"{feature.properties.name}, ");
+            }
         }
     }
 }
