@@ -1,4 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
+
+// TODO: Stop messing around with `Console.WriteLine()` and add proper logging!
 namespace AltitudeAngel
 {
     /**
@@ -259,13 +266,22 @@ namespace AltitudeAngel
     }
 */
 
-    public class AltitudeAngel
+    public class AltitudeAngelApi
     {
+        static Uri baseUri = new Uri("https://api.altitudeangel.com");
+        static Uri mapDataUri = new Uri(baseUri, "/v2/mapdata/geojson");
+
+        HttpClient client;
+
         /**
            AltitudeAngel() - Constructor which handles all HttpClient sessions.
+
+           @param String apiKey - API Key for Altitude Angel API authorization.
         */
-        public AltitudeAngel()
+        public AltitudeAngelApi(String apiKey)
         {
+            client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("X-AA-ApiKey", apiKey);
             // TODO: Take in API key.
 
             // TODO: Create a HttpClient instance stored on the object, that
@@ -308,9 +324,35 @@ namespace AltitudeAngel
         s	The south coordinate of the bounding box in degrees
         w	The west coordinate of the bounding box in degrees
         */
-        public void GetMapData(double north, double east, double south, double west)
+        public async Task<HttpResponseMessage> GetMapData(double north, double east, double south, double west)
         {
-            // TODO: Implement instance client to do GET call and return JSON/GeoJSON.
+            // TODO: Separate out: request building, external request/response,
+            // response verification, JSON extraction from response.
+
+            // Request Building.
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"n", north.ToString()},
+                {"e", east.ToString()},
+                {"s", south.ToString()},
+                {"w", west.ToString()}
+            };
+            Uri requestUri = UriTools.BuildRequestUri(mapDataUri, parameters);
+            Console.WriteLine($"xxx - requestUri: {requestUri}");
+
+            // External Request/Response.
+            HttpResponseMessage response = await client.GetAsync(requestUri);
+            // TODO return JSON/GeoJSON, or have a separate function that
+            // parses the JSON from the HttpResponseMessage along with
+            // verification's?
+
+            // Response Verification.
+
+            // JSON Extraction From Response.
+            String responseJsonString = await response.Content.ReadAsStringAsync();
+            // Console.WriteLine($"xxx - responseJsonString: {responseJsonString}");
+            // Json responseJson = JsonConvert.DeserializeObject<object>(responseJsonString);
+            return response;
         }
 
         /**

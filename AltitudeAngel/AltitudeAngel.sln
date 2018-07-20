@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C67788C9-F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltitudeAngelTest", "test\AltitudeAngelTest\AltitudeAngelTest.csproj", "{B6112A5B-F294-471B-8EAA-22E82D06920B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integration", "integration", "{24905262-95F5-41E0-B52D-99C0F698EAE6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AltitudeAngelTest", "integration\AltitudeAngelTest\AltitudeAngelTest.csproj", "{74238708-6027-4E3E-A594-60476471AE5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,9 +52,22 @@ Global
 		{B6112A5B-F294-471B-8EAA-22E82D06920B}.Release|x64.Build.0 = Release|Any CPU
 		{B6112A5B-F294-471B-8EAA-22E82D06920B}.Release|x86.ActiveCfg = Release|Any CPU
 		{B6112A5B-F294-471B-8EAA-22E82D06920B}.Release|x86.Build.0 = Release|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Debug|x64.Build.0 = Debug|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Debug|x86.Build.0 = Debug|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Release|x64.ActiveCfg = Release|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Release|x64.Build.0 = Release|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Release|x86.ActiveCfg = Release|Any CPU
+		{74238708-6027-4E3E-A594-60476471AE5A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8F571925-6833-43BA-838F-D3517B876EB7} = {2357BDFA-D8EB-44E8-AC9C-9FD39711FFCB}
 		{B6112A5B-F294-471B-8EAA-22E82D06920B} = {C67788C9-FD8F-49D6-957F-6445B7E3E613}
+		{74238708-6027-4E3E-A594-60476471AE5A} = {24905262-95F5-41E0-B52D-99C0F698EAE6}
 	EndGlobalSection
 EndGlobal
