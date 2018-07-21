@@ -269,8 +269,8 @@ namespace AltitudeAngel
 
     public class AltitudeAngelApi
     {
-        static Uri baseUri = new Uri("https://api.altitudeangel.com");
-        static Uri mapDataUri = new Uri(baseUri, "/v2/mapdata/geojson");
+        public static Uri baseUri = new Uri("https://api.altitudeangel.com");
+        public static Uri mapDataUri = new Uri(baseUri, "/v2/mapdata/geojson");
 
         HttpClient client;
 
