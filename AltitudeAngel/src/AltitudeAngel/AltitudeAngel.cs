@@ -342,12 +342,54 @@ namespace AltitudeAngel
             Console.WriteLine($"xxx - requestUri: {requestUri}");
 
             // External Request/Response.
-            HttpResponseMessage response = await client.GetAsync(requestUri);
+            HttpResponseMessage response;
+            try
+            {
+                response = await client.GetAsync(requestUri);
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine($" Request to: {requestUri}, failed with message: {e.Message}");
+                throw e;
+            }
             // TODO return JSON/GeoJSON, or have a separate function that
             // parses the JSON from the HttpResponseMessage along with
             // verification's?
 
             // Response Verification.
+            if (!response.IsSuccessStatusCode)
+            {
+                int sCode = (int)response.StatusCode;
+                // Non-200 status code, so need to do some failure paths.
+                if (sCode >= 300 && sCode <= 399)
+                {
+                    Console.WriteLine($"TODO: add HTTP Redirection code to retry request. Status Code: {sCode}");
+                }
+                else if (sCode == 400)
+                {
+                    Console.WriteLine($"TODO: add HTTP Bad Request (Missing Parameters) code. Give up request. Status Code: {sCode}");
+                }
+                else if (sCode == 401)
+                {
+                    Console.WriteLine($"TODO: add HTTP Missing Authentication code. Give up request. Status Code: {sCode}");
+                }
+                else if (sCode == 404)
+                {
+                    Console.WriteLine($"TODO: add HTTP Not Found (path) code. Give up request. Status Code: {sCode}");
+                    String responseContentString = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"--- response: {response}");
+                    Console.WriteLine($"--- response.ReasonPhrase: {response.ReasonPhrase}");
+                    Console.WriteLine($"--- response.Content: {responseContentString}");
+                }
+                else if (sCode >= 500 && sCode <= 599)
+                {
+                    Console.WriteLine($"TODO: add HTTP Server Error code. Give up request. Status Code: {sCode}");
+                }
+                else
+                {
+                    Console.WriteLine($"TODO: No specific handler path. add HTTP code?? Give up request. Status Code: {sCode}");
+                }
+            }
 
             // JSON Extraction From Response.
             String responseJsonString = await response.Content.ReadAsStringAsync();
