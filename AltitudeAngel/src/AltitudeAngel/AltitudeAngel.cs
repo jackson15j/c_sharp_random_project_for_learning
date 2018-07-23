@@ -269,6 +269,8 @@ namespace AltitudeAngel
 
     public class AltitudeAngelApi
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+
         public static Uri baseUri = new Uri("https://api.altitudeangel.com");
         public static Uri mapDataUri = new Uri(baseUri, "/v2/mapdata/geojson");
 
@@ -339,7 +341,7 @@ namespace AltitudeAngel
                 {"w", west.ToString()}
             };
             Uri requestUri = UriTools.BuildRequestUri(mapDataUri, parameters);
-            Console.WriteLine($"xxx - requestUri: {requestUri}");
+            log.Info($"xxx - requestUri: {requestUri}");
 
             // External Request/Response.
             HttpResponseMessage response;
@@ -349,7 +351,7 @@ namespace AltitudeAngel
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine($" Request to: {requestUri}, failed with message: {e.Message}");
+                log.Info($" Request to: {requestUri}, failed with message: {e.Message}");
                 throw e;
             }
             // TODO return JSON/GeoJSON, or have a separate function that
@@ -363,37 +365,37 @@ namespace AltitudeAngel
                 // Non-200 status code, so need to do some failure paths.
                 if (sCode >= 300 && sCode <= 399)
                 {
-                    Console.WriteLine($"TODO: add HTTP Redirection code to retry request. Status Code: {sCode}");
+                    log.Info($"TODO: add HTTP Redirection code to retry request. Status Code: {sCode}");
                 }
                 else if (sCode == 400)
                 {
-                    Console.WriteLine($"TODO: add HTTP Bad Request (Missing Parameters) code. Give up request. Status Code: {sCode}");
+                    log.Info($"TODO: add HTTP Bad Request (Missing Parameters) code. Give up request. Status Code: {sCode}");
                 }
                 else if (sCode == 401)
                 {
-                    Console.WriteLine($"TODO: add HTTP Missing Authentication code. Give up request. Status Code: {sCode}");
+                    log.Info($"TODO: add HTTP Missing Authentication code. Give up request. Status Code: {sCode}");
                 }
                 else if (sCode == 404)
                 {
-                    Console.WriteLine($"TODO: add HTTP Not Found (path) code. Give up request. Status Code: {sCode}");
+                    log.Info($"TODO: add HTTP Not Found (path) code. Give up request. Status Code: {sCode}");
                     String responseContentString = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"--- response: {response}");
-                    Console.WriteLine($"--- response.ReasonPhrase: {response.ReasonPhrase}");
-                    Console.WriteLine($"--- response.Content: {responseContentString}");
+                    log.Info($"--- response: {response}");
+                    log.Info($"--- response.ReasonPhrase: {response.ReasonPhrase}");
+                    log.Info($"--- response.Content: {responseContentString}");
                 }
                 else if (sCode >= 500 && sCode <= 599)
                 {
-                    Console.WriteLine($"TODO: add HTTP Server Error code. Give up request. Status Code: {sCode}");
+                    log.Info($"TODO: add HTTP Server Error code. Give up request. Status Code: {sCode}");
                 }
                 else
                 {
-                    Console.WriteLine($"TODO: No specific handler path. add HTTP code?? Give up request. Status Code: {sCode}");
+                    log.Info($"TODO: No specific handler path. add HTTP code?? Give up request. Status Code: {sCode}");
                 }
             }
 
             // JSON Extraction From Response.
             String responseJsonString = await response.Content.ReadAsStringAsync();
-            // Console.WriteLine($"xxx - responseJsonString: {responseJsonString}");
+            // log.Info($"xxx - responseJsonString: {responseJsonString}");
             MapData responseJson = JsonConvert.DeserializeObject<MapData>(responseJsonString);
             return responseJson;
         }
