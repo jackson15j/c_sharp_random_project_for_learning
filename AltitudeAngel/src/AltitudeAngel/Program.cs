@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NLog;
 
 namespace AltitudeAngel
 {
@@ -10,12 +9,7 @@ namespace AltitudeAngel
 
         static void Main(string[] args)
         {
-            var config = new NLog.Config.LoggingConfiguration();
-            var logfile = new NLog.Targets.FileTarget("logfile") { FileName = "app.log" };
-            var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
-            config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
-            NLog.LogManager.Configuration = config;
+            AppLog.ConfigureLogging();
 
             // TODO: Create entry points into the code like git/dotnet:
             // `aa weather <lon> <lat>`
