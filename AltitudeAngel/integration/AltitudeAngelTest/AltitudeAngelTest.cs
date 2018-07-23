@@ -9,6 +9,8 @@ namespace AltitudeAngelTest
     */
     public class AltitudeAngelTest
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+
         // TODO: Add apiKey to an encrypted store outside of the repo for tests
         // and CI.
         static String apiKey = "";
@@ -32,13 +34,17 @@ xxx response: StatusCode: 200, ReasonPhrase: 'OK', Version: 1.1, Content: System
         [Fact]
         public async void GetMapDataTest()
         {
+            // FIXME: Need a test base class or somewhere else generic to setup
+            // logging!!
+            AppLog.ConfigureLogging();
+
             AltitudeAngelApi client = new AltitudeAngelApi(apiKey);
             MapData response = await client.GetMapData(
                 51.46227963315035, -0.9569686575500782, 51.450125805383585, -0.9857433958618458);
-            Console.WriteLine($"xxx response: {response}");
+            log.Info($"xxx response: {response}");
             foreach(Feature feature in response.features)
             {
-                Console.WriteLine($"xxx features: {feature.properties.name}");
+                log.Info($"xxx features: {feature.properties.name}");
             }
         }
     }

@@ -34,6 +34,8 @@ namespace AltitudeAngelTest
     */
     public class AltitudeAngelsRestApiTest
     {
+        private static NLog.Logger log = NLog.LogManager.GetCurrentClassLogger();
+
         // TODO: Add apiKey to an encrypted store outside of the repo for tests
         // and CI.
         static String apiKey = "";
@@ -87,17 +89,21 @@ namespace AltitudeAngelTest
         [MemberData(nameof(ApiDataTestMemberData))]
         public async void MapDataTest(ApiData apiData)
         {
-            Console.WriteLine($"--- Running test: {apiData.testReasoning}...");
+            // FIXME: Need a test base class or somewhere else generic to setup
+            // logging!!
+            AppLog.ConfigureLogging();
+
+            log.Info($"--- Running test: {apiData.testReasoning}...");
             // FIXME: move client creation to general setup method.
             client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("X-AA-ApiKey", apiKey);
 
             Uri requestUri = UriTools.BuildRequestUri(AltitudeAngelApi.mapDataUri, apiData.parameters);
-            Console.WriteLine($"xxx - requestUri: {requestUri}");
+            log.Info($"xxx - requestUri: {requestUri}");
 
             HttpResponseMessage response = await client.GetAsync(requestUri);
             // String responseContentString = await response.Content.ReadAsStringAsync();
-            // Console.WriteLine($"xxx - response: {response}");
+            // log.Info($"xxx - response: {response}");
 
             Assert.Equal(apiData.expStatusCode, response.StatusCode);
         }
