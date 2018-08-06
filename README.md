@@ -64,7 +64,7 @@ CI
 
 Travis is configured to build the Docker container.
 
-[csharp_notes]: csharp_notes.md
+[csharp_notes]: https://github.com/jackson15j/programming_notes/blob/master/csharp_notes.md
 [Github: .emacs]: https://github.com/jackson15j/dot_emacs
 [Github: Coverlet]: https://github.com/tonerdo/coverlet
 [Github: coverlay]: https://github.com/twada/coverlay.el
